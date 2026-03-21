@@ -1,86 +1,92 @@
-AI SaaS Support Chatbot
-RAG-based AI chatbot trained on PDFs and websites.
+📚 AI SaaS Support Chatbot
+ 
+A ChatGPT-like web application that allows users to chat with documents. Users can upload PDFs, and the bot answers questions based on both preloaded documents and uploaded PDFs using LangChain, FAISS, and OpenAI embeddings.
 
-An AI-powered customer support chatbot demo project.
-It learns from PDFs and websites, and provides AI-generated answers to user questions.
+🚀 Features
 
-Features
+Chat with your PDFs: Ask questions about the content of uploaded PDFs.
+Preloaded documents support: Includes your initial PDFs or web scraping content.
+Dynamic FAISS index: Newly uploaded PDFs are automatically added to the search index.
+Streamlit interface: Simple, interactive web UI.
+OpenAI GPT-4o-mini backend: Uses OpenAI embeddings for semantic search and GPT model for QA.
+Persistent session: Chat history and uploaded PDFs remain during the session.
+Safe deserialization: Loads FAISS index securely.
 
-📄 PDF & Website-based knowledge base
+🛠️ Tech Stack
 
-🧠 FAISS Vector Database for semantic search
+Python 3.10+
+Streamlit – Web UI framework
+LangChain – LLM orchestration & document processing
+FAISS – Vector store for embeddings and semantic search
+OpenAI API – GPT model for question answering
+dotenv – Secure API key management
 
-🤖 OpenAI GPT for answer generation
+⚡ Installation
 
-🖥️ Streamlit user interface for easy testing
+Clone the repository
+git clone https://github.com/<your-username>/ai-pdf-chatbot.git
+cd ai-pdf-chatbot
+Create a virtual environment
+python -m venv .venv
+Activate the virtual environment
+Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+macOS / Linux:
+source .venv/bin/activate
+Install dependencies
+pip install -r requirements.txt
+Add your OpenAI API key
 
+Create a .env file in the project root:
 
-Project Structure
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+🖥️ Usage
 
-ai-saas-support-chatbot/
+Run the Streamlit app:
+
+streamlit run app/streamlit_app.py
+Open your browser at http://localhost:8501
+Upload PDFs in the 📄 Upload PDFs section
+Ask questions using the chat box
+
+The bot will answer based on both preloaded and newly uploaded PDFs.
+
+🗂️ Project Structure
+ai-pdf-chatbot/
+│
 ├── app/
-│   ├── ingest.py         # Index PDFs and websites
-│   ├── scraper.py        # Optional: web scraping
-│   └── chatbot.py        # Chatbot logic
-├── data/
-│   ├── notion_docs.pdf
-│   ├── stripe_docs.pdf
-│   └── legal_contract.pdf
-├── faiss_index/          # Generated FAISS index files
-├── frontend/
-│   └── streamlit_app.py
-├── .env                  # OpenAI API key
+│   ├── chatbot.py          # QA chain and FAISS loading
+│   ├── ingest.py           # Preload documents / PDFs into FAISS
+│   └── streamlit_app.py    # Streamlit front-end
+│
+├── faiss_index/            # FAISS vector store (auto-generated)
+├── data/                   # Preloaded PDFs
+├── .env                    # OpenAI API key (not in repo)
 ├── requirements.txt
 └── README.md
 
+⚠️ Security Notes
 
-Installation
+FAISS uses pickle files for serialization.
+The app sets allow_dangerous_deserialization=True for local, trusted files.
+Never load untrusted FAISS indexes from unknown sources.
+Keep .env secure and do not push it to GitHub.
 
-Create a virtual environment:
+📝 Dependencies
 
-python -m venv venv
+Key dependencies:
 
-Activate the environment and install dependencies:
+streamlit
+langchain
+langchain-classic
+langchain-openai
+langchain-community
+faiss-cpu
+python-dotenv
 
-pip install -r requirements.txt
+(Check requirements.txt for full versions.)
 
-Add your OpenAI API key to .env:
-
-OPENAI_API_KEY=sk-XXXXXXXXXXXXXXXXXXXXXXXX
-
-Place the demo PDFs in data/
-
-Run the ingestion script to build the vector index:
-
-python app/ingest.py
-
-Start the Streamlit interface:
-
-streamlit run frontend/streamlit_app.py
-
-
-Usage Examples
-How do I create a workspace in Notion?
-How does Stripe API work?
-What is an NDA contract?
-How It Works
-
-Load PDFs and optionally scrape websites
-
-Split text into smaller chunks
-
-Generate embeddings with OpenAI
-
-Store embeddings in FAISS vector database
-
-Retrieve relevant chunks for user queries
-
-Generate answers using GPT
-
-Notes
-
-For production, optimize website scraping and embeddings
-
-You can add source attribution to responses
-
-Multi-PDF support and conversation memory can enhance the chatbot
+📌 Tips
+Only PDFs are supported for upload.
+Chat history is session-based; refreshing the browser will reset it.
+The chatbot is retrieval-augmented: answers are based on the indexed PDFs, not generic web knowledge.
